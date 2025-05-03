@@ -1,15 +1,17 @@
 let numLetters;
 let numGivenLetters;
-let generatedWord;
+let generatedWord = "";
 let gameBox;
 let userAttemptedWord = "";
 let matchingWord = true;
+let dictionary = null;
+let goodWord = "";
 
 // numLettersSubmit
 //"daily-attempt-puzzle
 
 // start of game - when number of letters choice is submitted
-document.getElementById("numLettersSubmit").onclick = function () {
+document.getElementById("numLettersSubmit").onclick = async function () {
   numLetters = document.getElementById("numLetters").value;
   numLetters = Number(numLetters);
   console.log(numLetters);
@@ -22,7 +24,8 @@ document.getElementById("numLettersSubmit").onclick = function () {
   document.getElementById("usr-msg").textContent = "Word has been generated";
 
   // Generate random word
-  generatedWord = generateRandomWord(numLetters);
+  generatedWord = await generateRandomWord(numLetters);
+  console.log("top level: " + generatedWord);
   document.getElementById("generatedWordToGuess").textContent = generatedWord.toUpperCase();
 
   inputBoxes(generatedWord.length);
@@ -36,168 +39,24 @@ document.getElementById("gameBoxSubmit").onclick = function () {
   //   document.getElementById("gameOutcome").textContent = checkWords(userAttempt);
 };
 
+async function loadWords() {
+  const res = await fetch("words_dictionary.json");
+  return Object.keys(await res.json());
+}
 // generates a random word
-function generateRandomWord(length) {
-  const dictionary = [
-    "a",
-    "ability",
-    "able",
-    "about",
-    "above",
-    "absence",
-    "academy",
-    "accept",
-    "accident",
-    "adventure",
-    "alien",
-    "amazing",
-    "analysis",
-    "balance",
-    "banana",
-    "behavior",
-    "believe",
-    "benefit",
-    "black",
-    "brilliant",
-    "calculator",
-    "capture",
-    "capital",
-    "celebrate",
-    "ceremony",
-    "champion",
-    "change",
-    "chapter",
-    "cheerful",
-    "clever",
-    "decision",
-    "distant",
-    "effort",
-    "elegant",
-    "evidence",
-    "factor",
-    "fiction",
-    "famous",
-    "fantasy",
-    "freedom",
-    "horizon",
-    "honor",
-    "hospital",
-    "house",
-    "imagine",
-    "incredible",
-    "inspire",
-    "journey",
-    "judgment",
-    "kingdom",
-    "laughter",
-    "legend",
-    "mystery",
-    "magnificent",
-    "master",
-    "magnificent",
-    "moral",
-    "objective",
-    "optimistic",
-    "pencil",
-    "potential",
-    "positive",
-    "practical",
-    "quickly",
-    "question",
-    "reality",
-    "refresh",
-    "reward",
-    "remarkable",
-    "safety",
-    "strategy",
-    "sunshine",
-    "strength",
-    "succeed",
-    "teamwork",
-    "technology",
-    "trouble",
-    "universe",
-    "unique",
-    "vision",
-    "welcome",
-    "wonderful",
-    "xenon",
-    "yellow",
-    "yesterday",
-    "zephyr",
-    "zealous",
-    "zigzag",
-    "acceptance",
-    "agility",
-    "agenda",
-    "alert",
-    "alright",
-    "amazing",
-    "ancient",
-    "analyze",
-    "balance",
-    "beauty",
-    "brave",
-    "brilliant",
-    "calm",
-    "climate",
-    "champion",
-    "classic",
-    "climbing",
-    "charming",
-    "defeat",
-    "diligent",
-    "dominate",
-    "empathy",
-    "electro",
-    "examine",
-    "fairness",
-    "focus",
-    "generate",
-    "harbor",
-    "healthy",
-    "innovate",
-    "inspire",
-    "jersey",
-    "joke",
-    "judge",
-    "kitchen",
-    "kingdom",
-    "laugh",
-    "legendary",
-    "mastery",
-    "mature",
-    "neutral",
-    "noble",
-    "notice",
-    "optimism",
-    "pattern",
-    "perception",
-    "potential",
-    "quietly",
-    "refresh",
-    "reproduce",
-    "reality",
-    "restore",
-    "silence",
-    "tactile",
-    "triumph",
-    "unity",
-    "vibe",
-    "visual",
-    "wander",
-    "zeal",
-    "yoga",
-    "zigzag",
-  ];
+async function generateRandomWord(length) {
+  let word = "";
+  dictionary = await loadWords();
+  //console.log("dictonaryu: " + dictionary);
 
-  generatedWord = "";
   //   for (let i = 0; i < length; i++) {
   //     let randomIndex = Math.floor(Math.random() * dictionary.length);
   //     generatedWord = generatedWord + dictionary[randomIndex];
   //   }
-  generatedWord = dictionary[Math.floor(Math.random() * dictionary.length)];
-  return generatedWord;
+  word = dictionary[Math.floor(Math.random() * dictionary.length)];
+  goodWord = word;
+  console.log("generated word: " + word);
+  return word;
 }
 
 // comparision of generated word and user guess
@@ -213,7 +72,12 @@ function checkWords(word) {
   //     document.getElementById("gameOutcome").textContent = "Correct Guess   " + generatedWord;
   //   } else {
   let tempWord = "";
+  const inputs = document.querySelectorAll(".inputBox");
   if (word.toUpperCase() === generatedWord.toUpperCase()) {
+    for (let i = 0; i < word.length; i++) {
+      inputs[i].disabled = true;
+      console.log("letter: " + i);
+    }
     matchingWord = true;
     console.log("User Attempt: " + userAttemptedWord);
     document.getElementById("gameOutcome").textContent = "Correct Guess - " + word.toUpperCase();
@@ -221,6 +85,9 @@ function checkWords(word) {
     matchingWord = false;
     for (let i = 0; i < word.length; i++) {
       if (word.charAt(i) === generatedWord.charAt(i)) {
+        inputs[i].disabled = true;
+        console.log("letter: " + i);
+
         tempWord += word.charAt(i);
       } else {
         tempWord += word.charAt(i);
