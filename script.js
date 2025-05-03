@@ -3,6 +3,7 @@ let numGivenLetters;
 let generatedWord;
 let gameBox;
 let userAttemptedWord = "";
+let matchingWord = true;
 
 // numLettersSubmit
 //"daily-attempt-puzzle
@@ -201,7 +202,6 @@ function generateRandomWord(length) {
 
 // comparision of generated word and user guess
 function checkWords(word) {
-  let s = "";
   //   for (let i = 0; i < generatedWord.length; i++) {
   //     if (word.charAt(i) === generatedWord.charAt(i)) {
   //       s += word.charAt(i) + " ";
@@ -213,16 +213,23 @@ function checkWords(word) {
   //     document.getElementById("gameOutcome").textContent = "Correct Guess   " + generatedWord;
   //   } else {
   let tempWord = "";
-  for (let i = 0; i < word.length; i++) {
-    if (word.charAt(i) === generatedWord.charAt(i)) {
-      tempWord += word.charAt(i);
-    } else {
-      tempWord += "X";
+  if (word.toUpperCase() === generatedWord.toUpperCase()) {
+    matchingWord = true;
+    console.log("User Attempt: " + userAttemptedWord);
+    document.getElementById("gameOutcome").textContent = "Correct Guess - " + word.toUpperCase();
+  } else {
+    matchingWord = false;
+    for (let i = 0; i < word.length; i++) {
+      if (word.charAt(i) === generatedWord.charAt(i)) {
+        tempWord += word.charAt(i);
+      } else {
+        tempWord += word.charAt(i);
+      }
     }
+    userAttemptedWord = tempWord;
+    console.log("User Attempt: " + userAttemptedWord);
+    document.getElementById("gameOutcome").textContent = "Incorrect Guess - " + word.toUpperCase();
   }
-  userAttemptedWord = tempWord;
-  console.log("User Attempt: " + userAttemptedWord);
-  document.getElementById("gameOutcome").textContent = "Incorrect Guess   " + s;
   //}
 }
 
@@ -241,13 +248,24 @@ function inputBoxes(wordLength) {
   const container = document.getElementById("innerGameBox");
   container.innerHTML = "";
 
+  // for loop for individual input boxes
   for (let i = 0; i < wordLength; i++) {
     const input = document.createElement("input");
     input.type = "text";
     input.maxLength = 1;
     input.classList.add("inputBox");
 
+    // individual input boxes
     input.addEventListener("input", (e) => {
+      const inputs = document.querySelectorAll(".inputBox");
+      let isFull = true;
+      inputs.forEach((box) => {
+        if (box.value === "") {
+          isFull = false;
+        }
+      });
+
+      // deals with auto moving to next box;
       if (e.target.value.length === 1 && i < wordLength - 1) {
         container.children[i + 1].focus();
         userAttemptedWord += e.target.value;
@@ -256,11 +274,20 @@ function inputBoxes(wordLength) {
         userAttemptedWord += e.target.value;
         console.log(userAttemptedWord);
       }
-      checkWords(userAttemptedWord);
+
       //   if (i === wordLength - 1) {
       //     checkWords(userAttemptedWord);
       //     console.log(i);
       //   }
+
+      // checks against generated word if all input boxes are full
+      if (isFull) {
+        word = "";
+        inputs.forEach((box) => {
+          word += box.value;
+        });
+        checkWords(word);
+      }
     });
     container.appendChild(input);
   }
