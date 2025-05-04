@@ -11,21 +11,20 @@ let goodWord = "";
 //"daily-attempt-puzzle
 
 // start of game - when number of letters choice is submitted
-document.getElementById("numLettersSubmit").onclick = async function () {
-  numLetters = document.getElementById("numLetters").value;
-  numLetters = Number(numLetters);
-  console.log(numLetters);
+document.getElementById("daily-attempt-puzzle").onclick = async function () {
+  //   numLetters = document.getElementById("numLetters").value;
+  //   numLetters = Number(numLetters);
+  //   console.log(numLetters);
 
-  // number of given letters
-  numGivenLetters = document.getElementById("numGivenLetters").value;
-  console.log(numGivenLetters);
+  //   // number of given letters
+  //   numGivenLetters = document.getElementById("numGivenLetters").value;
+  //   console.log(numGivenLetters);
 
   // message for user notification
   document.getElementById("usr-msg").textContent = "Word has been generated";
 
   // Generate random word
   generatedWord = await generateRandomWord(numLetters);
-  console.log("top level: " + generatedWord);
   document.getElementById("generatedWordToGuess").textContent = generatedWord.toUpperCase();
 
   inputBoxes(generatedWord.length);
@@ -54,8 +53,6 @@ async function generateRandomWord(length) {
   //     generatedWord = generatedWord + dictionary[randomIndex];
   //   }
   word = dictionary[Math.floor(Math.random() * dictionary.length)];
-  goodWord = word;
-  console.log("generated word: " + word);
   return word;
 }
 

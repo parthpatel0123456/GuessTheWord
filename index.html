@@ -16,15 +16,14 @@
     <div class="hero">
       <h1>Guess-ti-mate</h1>
       <input
-        class="daily-attempt-puzzle"
+        id="daily-attempt-puzzle"
         type="button"
-        value="Guess Today's
-      Puzzle"
+        value="Guess Today's Puzzle"
       />
     </div>
 
     <!-- Choose game settings -->
-    <div class="game-settings">
+    <!-- <div class="game-settings">
       <label>Number of Letters To Guess: </label>
       <input
         class="box"
@@ -37,17 +36,57 @@
       /><br /><br />
       <button id="numLettersSubmit">Submit</button>
     </div>
+-->
 
+    <!-- Rules -->
+    <h2 id="HowToPlay">How To Play</h2>
+    <div class="rules">
+      <div id="ruleCards">
+        <h4 id="cardOneInfo">
+          <u
+            >1. Select <em><b>Guess Today's Puzzle</b></em></u
+          >
+        </h4>
+        <!-- <img
+          src="card-1.png"
+          id="cardOne"
+        /> -->
+        <video
+          id="card-1-video"
+          width="575"
+          autoplay
+          muted
+        >
+          <source
+            src="card-1.mp4"
+            id="cardOne"
+            type="video/mp4"
+          />
+          Your browser does not support the video tag.
+        </video>
+        <script>
+          const video = document.getElementById("card-1-video");
+          video.playbackRate = 0.75;
+          setTimeout(() => {
+            video.play();
+          }, 2000); // 2000 milliseconds = 2 seconds
+        </script>
+      </div>
+      <div id="ruleCards">Card 2</div>
+      <div id="ruleCards">Card 3</div>
+    </div>
     <!-- Play game -->
     <div class="game">
-      <h2>Guess The Word</h2>
-      <p id="usr-msg"></p>
-      <p id="gameOutcome"></p>
-        <!-- Temp game box-->
+      <h2 id="usr-msg">&nbsp;</h2>
+      <h3 id="gameOutcome"></h3>
+      <!-- Temp game box
       <input id="game-box"></input>
+      -->
       <!-- Good game box-->
       <div id="innerGameBox"></div>
+      <!--
       <button id="gameBoxSubmit">Submit</button>
+      -->
       <h3 id="generatedWordToGuess"></h3>
     </div>
     <script src="script.js"></script>
