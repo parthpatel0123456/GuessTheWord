@@ -72,6 +72,7 @@ function checkWords(word) {
   const inputs = document.querySelectorAll(".inputBox");
   if (word.toUpperCase() === generatedWord.toUpperCase()) {
     for (let i = 0; i < word.length; i++) {
+      inputs[i].style.backgroundColor = "#85FF93";
       inputs[i].disabled = true;
       console.log("letter: " + i);
     }
@@ -82,11 +83,14 @@ function checkWords(word) {
     matchingWord = false;
     for (let i = 0; i < word.length; i++) {
       if (word.charAt(i) === generatedWord.charAt(i)) {
+        inputs[i].style.backgroundColor = "#85FF93";
+
         inputs[i].disabled = true;
         console.log("letter: " + i);
 
         tempWord += word.charAt(i);
       } else {
+        inputs[i].style.backgroundColor = "#FF6383";
         tempWord += word.charAt(i);
       }
     }
@@ -134,9 +138,19 @@ function inputBoxes(wordLength) {
         container.children[i + 1].focus();
         userAttemptedWord += e.target.value;
         console.log(userAttemptedWord);
+        if (e.target.value === generatedWord.charAt(i)) {
+          inputs[i].style.backgroundColor = "#85FF93";
+        } else {
+          inputs[i].style.backgroundColor = "#FF6383";
+        }
       } else {
         userAttemptedWord += e.target.value;
         console.log(userAttemptedWord);
+        if (e.target.value === generatedWord.charAt(i)) {
+          inputs[i].style.backgroundColor = "#85FF93";
+        } else {
+          inputs[i].style.backgroundColor = "#FF6383";
+        }
       }
 
       //   if (i === wordLength - 1) {
@@ -145,6 +159,7 @@ function inputBoxes(wordLength) {
       //   }
 
       // checks against generated word if all input boxes are full
+
       if (isFull) {
         word = "";
         inputs.forEach((box) => {

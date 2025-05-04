@@ -85,11 +85,12 @@ h4 {
 }
 
 .inputBox {
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 4rem;
+  height: 4rem;
   text-align: center;
-  font-size: 1.5rem;
+  font-size: 2.75rem;
   text-transform: capitalize;
+  border-radius: 5px;
 }
 
 #usr-msg {
@@ -106,7 +107,8 @@ h4 {
 }
 
 .rules {
-  padding: 2em;
+  padding-left: 7.5em;
+  padding-right: 7.5em;
   display: flex;
   justify-content: space-between;
   gap: 50px;
