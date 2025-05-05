@@ -149,12 +149,19 @@ function inputBoxes(wordLength) {
           container.children[i].focus();
 
           if (attempts === 1) {
+            document.getElementById("gameOutcome").textContent = "Incorrect Guess - 2 Attempts Remaining";
             input.style.backgroundColor = "#FF6383"; // light red
           } else if (attempts === 2) {
+            document.getElementById("gameOutcome").textContent = "Incorrect Guess - 1 Attempts Remaining";
             input.style.backgroundColor = "#FF335C"; // medium red
           } else {
+            document.getElementById("gameOutcome").textContent = "Incorrect Guess - 0 Attempts Remaining";
+
             input.style.backgroundColor = "#F50031"; // dark red
             inputs[i].disabled = true;
+            for (let j = i + 1; j < word.length; j++) {
+              inputs[j].disabled = true;
+            }
           }
         }
       } else {
