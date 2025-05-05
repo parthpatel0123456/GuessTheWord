@@ -135,13 +135,27 @@ function inputBoxes(wordLength) {
 
       // deals with auto moving to next box;
       if (e.target.value.length === 1 && i < wordLength - 1) {
-        container.children[i + 1].focus();
+        //container.children[i + 1].focus();
         userAttemptedWord += e.target.value;
         console.log(userAttemptedWord);
         if (e.target.value === generatedWord.charAt(i)) {
+          container.children[i + 1].focus();
           inputs[i].style.backgroundColor = "#85FF93";
+          inputs[i].disabled = true;
         } else {
-          inputs[i].style.backgroundColor = "#FF6383";
+          let attempts = parseInt(input.getAttribute("data-attempts")) || 0;
+          attempts++;
+          input.setAttribute("data-attempts", attempts.toString());
+          container.children[i].focus();
+
+          if (attempts === 1) {
+            input.style.backgroundColor = "#FF6383"; // light red
+          } else if (attempts === 2) {
+            input.style.backgroundColor = "#FF335C"; // medium red
+          } else {
+            input.style.backgroundColor = "#F50031"; // dark red
+            inputs[i].disabled = true;
+          }
         }
       } else {
         userAttemptedWord += e.target.value;
